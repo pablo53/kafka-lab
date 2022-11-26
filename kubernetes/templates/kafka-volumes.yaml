@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kafka-secrets-pv
+spec:
+  storageClassName: ""
+  volumeMode: Filesystem
+  capacity:
+    storage: 16Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.local.volumes.path }}/kafka/secrets
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kafka-data-pv
+spec:
+  storageClassName: ""
+  volumeMode: Filesystem
+  capacity:
+    storage: 16Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.local.volumes.path }}/kafka/data

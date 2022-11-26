@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+spec:
+  selector:
+    app: KAFKA
+  type: NodePort
+  ports:
+    - name: kafka-listener-port
+      protocol: TCP
+      port: 29092
+      targetPort: 29092
+      nodePort: 30092

@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ZOOKEEPER
+  template:
+    metadata:
+      name: zookeeper-lab
+      labels:
+        app: ZOOKEEPER
+    spec:
+      hostname: zookeeper
+      containers:
+        - name: zookeeper
+          image: confluentinc/cp-zookeeper:7.3.0
+          ports:
+            - containerPort: 2181
+          volumeMounts:
+            - mountPath: /etc/zookeeper/secrets
+              name: zookeeper-secrets-vol
+            - mountPath: /var/lib/zookeeper/data
+              name: zookeeper-data-vol
+            - mountPath: /var/lib/zookeeper/log
+              name: zookeeper-log-vol
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+      volumes:
+        - name: zookeeper-secrets-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-secrets-pvc
+        - name: zookeeper-data-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-data-pvc
+        - name: zookeeper-log-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-log-pvc
+      restartPolicy: Always

@@ -9,11 +9,10 @@ spec:
   ports:
     - name: kafka-listener-port
       protocol: TCP
-      port: 30092
-      targetPort: 30092
+      port: 29092
+      targetPort: 29092
       nodePort: 30092
     - name: kafka-interbroker-port
       protocol: TCP
       port: 9092
       targetPort: 9092
-      nodePort: 30093

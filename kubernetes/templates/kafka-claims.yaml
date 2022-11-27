@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: kafka-secrets-pvc
+  name: kafka-secrets-1-pvc
 spec:
   storageClassName: ""
   accessModes:
     - ReadWriteOnce
-  volumeName: kafka-secrets-pv
+  volumeName: kafka-secrets-1-pv
   resources:
     requests:
       storage: 16Mi
@@ -14,12 +14,64 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: kafka-data-pvc
+  name: kafka-data-1-pvc
 spec:
   storageClassName: ""
   accessModes:
     - ReadWriteOnce
-  volumeName: kafka-data-pv
+  volumeName: kafka-data-1-pv
+  resources:
+    requests:
+      storage: 16Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kafka-secrets-2-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: kafka-secrets-2-pv
+  resources:
+    requests:
+      storage: 16Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kafka-data-2-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: kafka-data-2-pv
+  resources:
+    requests:
+      storage: 16Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kafka-secrets-3-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: kafka-secrets-3-pv
+  resources:
+    requests:
+      storage: 16Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kafka-data-3-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: kafka-data-3-pv
   resources:
     requests:
       storage: 16Gi

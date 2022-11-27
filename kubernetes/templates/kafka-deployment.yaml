@@ -1,24 +1,24 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka-lab
+  name: kafka1-lab
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: KAFKA
+      app: KAFKA1
   template:
     metadata:
-      name: kafka-lab
+      name: kafka1-lab
       labels:
-        app: KAFKA
+        app: KAFKA1
     spec:
-      hostname: kafka
+      hostname: kafka1
       containers:
-        - name: kafka
+        - name: kafka1
           image: confluentinc/cp-kafka:7.3.0
           ports:
+            - containerPort: 9092
             - containerPort: 29092
           volumeMounts:
             - mountPath: /etc/kafka/secrets
@@ -33,18 +33,120 @@ spec:
             - name: KAFKA_LISTENERS
               value: "INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "INTERNAL://kafka-service:9092,EXTERNAL://localhost:30092"
+              value: "INTERNAL://kafka1-service:9092,EXTERNAL://localhost:30092"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "INTERNAL"
-            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
-              value: "1"
+#            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+#              value: "1"
       volumes:
         - name: kafka-secrets-vol
           persistentVolumeClaim:
-            claimName: kafka-secrets-pvc
+            claimName: kafka-secrets-1-pvc
         - name: kafka-data-vol
           persistentVolumeClaim:
-            claimName: kafka-data-pvc
+            claimName: kafka-data-1-pvc
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka2-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: KAFKA2
+  template:
+    metadata:
+      name: kafka2-lab
+      labels:
+        app: KAFKA2
+    spec:
+      hostname: kafka2
+      containers:
+        - name: kafka2
+          image: confluentinc/cp-kafka:7.3.0
+          ports:
+            - containerPort: 9092
+            - containerPort: 29092
+          volumeMounts:
+            - mountPath: /etc/kafka/secrets
+              name: kafka-secrets-vol
+            - mountPath: /var/lib/kafka/data
+              name: kafka-data-vol
+          env:
+            - name: KAFKA_BROKER_ID
+              value: "2"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "zookeeper1-service:2181,zookeeper2-service:2181,zookeeper3-service:2181"
+            - name: KAFKA_LISTENERS
+              value: "INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "INTERNAL://kafka2-service:9092,EXTERNAL://localhost:30093"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INTERNAL"
+#            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+#              value: "1"
+      volumes:
+        - name: kafka-secrets-vol
+          persistentVolumeClaim:
+            claimName: kafka-secrets-2-pvc
+        - name: kafka-data-vol
+          persistentVolumeClaim:
+            claimName: kafka-data-2-pvc
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka3-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: KAFKA3
+  template:
+    metadata:
+      name: kafka3-lab
+      labels:
+        app: KAFKA3
+    spec:
+      hostname: kafka3
+      containers:
+        - name: kafka3
+          image: confluentinc/cp-kafka:7.3.0
+          ports:
+            - containerPort: 9092
+            - containerPort: 29092
+          volumeMounts:
+            - mountPath: /etc/kafka/secrets
+              name: kafka-secrets-vol
+            - mountPath: /var/lib/kafka/data
+              name: kafka-data-vol
+          env:
+            - name: KAFKA_BROKER_ID
+              value: "3"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "zookeeper1-service:2181,zookeeper2-service:2181,zookeeper3-service:2181"
+            - name: KAFKA_LISTENERS
+              value: "INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "INTERNAL://kafka3-service:9092,EXTERNAL://localhost:30094"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INTERNAL"
+#            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+#              value: "1"
+      volumes:
+        - name: kafka-secrets-vol
+          persistentVolumeClaim:
+            claimName: kafka-secrets-3-pvc
+        - name: kafka-data-vol
+          persistentVolumeClaim:
+            claimName: kafka-data-3-pvc
       restartPolicy: Always

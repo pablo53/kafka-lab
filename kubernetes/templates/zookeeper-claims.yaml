@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zookeeper-secrets-pvc
+  name: zookeeper-secrets-1-pvc
 spec:
   storageClassName: ""
   accessModes:
     - ReadWriteOnce
-  volumeName: zookeeper-secrets-pv
+  volumeName: zookeeper-secrets-1-pv
   resources:
     requests:
       storage: 16Mi
@@ -14,12 +14,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zookeeper-data-pvc
+  name: zookeeper-data-1-pvc
 spec:
   storageClassName: ""
   accessModes:
     - ReadWriteOnce
-  volumeName: zookeeper-data-pv
+  volumeName: zookeeper-data-1-pv
   resources:
     requests:
       storage: 16Gi
@@ -27,12 +27,90 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zookeeper-log-pvc
+  name: zookeeper-log-1-pvc
 spec:
   storageClassName: ""
   accessModes:
     - ReadWriteOnce
-  volumeName: zookeeper-log-pv
+  volumeName: zookeeper-log-1-pv
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zookeeper-secrets-2-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: zookeeper-secrets-2-pv
+  resources:
+    requests:
+      storage: 16Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zookeeper-data-2-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: zookeeper-data-2-pv
+  resources:
+    requests:
+      storage: 16Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zookeeper-log-2-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: zookeeper-log-2-pv
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zookeeper-secrets-3-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: zookeeper-secrets-3-pv
+  resources:
+    requests:
+      storage: 16Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zookeeper-data-3-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: zookeeper-data-3-pv
+  resources:
+    requests:
+      storage: 16Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zookeeper-log-3-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  volumeName: zookeeper-log-3-pv
   resources:
     requests:
       storage: 2Gi

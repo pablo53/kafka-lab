@@ -2,24 +2,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zookeeper-lab
+  name: zookeeper1-lab
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ZOOKEEPER
+      app: ZOOKEEPER1
   template:
     metadata:
-      name: zookeeper-lab
+      name: zookeeper1-lab
       labels:
-        app: ZOOKEEPER
+        app: ZOOKEEPER1
     spec:
-      hostname: zookeeper
+      hostname: zookeeper1
       containers:
-        - name: zookeeper
+        - name: zookeeper1
           image: confluentinc/cp-zookeeper:7.3.0
           ports:
             - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
           volumeMounts:
             - mountPath: /etc/zookeeper/secrets
               name: zookeeper-secrets-vol
@@ -28,6 +30,10 @@ spec:
             - mountPath: /var/lib/zookeeper/log
               name: zookeeper-log-vol
           env:
+            - name: ZOOKEEPER_SERVER_ID
+              value: "1"
+            - name: ZOOKEEPER_SERVERS
+              value: "0.0.0.0:2888:3888;zookeeper2-service:2888:3888;zookeeper3-service:2888:3888"
             - name: ZOOKEEPER_CLIENT_PORT
               value: "2181"
             - name: ZOOKEEPER_TICK_TIME
@@ -35,11 +41,113 @@ spec:
       volumes:
         - name: zookeeper-secrets-vol
           persistentVolumeClaim:
-            claimName: zookeeper-secrets-pvc
+            claimName: zookeeper-secrets-1-pvc
         - name: zookeeper-data-vol
           persistentVolumeClaim:
-            claimName: zookeeper-data-pvc
+            claimName: zookeeper-data-1-pvc
         - name: zookeeper-log-vol
           persistentVolumeClaim:
-            claimName: zookeeper-log-pvc
+            claimName: zookeeper-log-1-pvc
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper2-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ZOOKEEPER2
+  template:
+    metadata:
+      name: zookeeper2-lab
+      labels:
+        app: ZOOKEEPER2
+    spec:
+      hostname: zookeeper2
+      containers:
+        - name: zookeeper2
+          image: confluentinc/cp-zookeeper:7.3.0
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - mountPath: /etc/zookeeper/secrets
+              name: zookeeper-secrets-vol
+            - mountPath: /var/lib/zookeeper/data
+              name: zookeeper-data-vol
+            - mountPath: /var/lib/zookeeper/log
+              name: zookeeper-log-vol
+          env:
+            - name: ZOOKEEPER_SERVER_ID
+              value: "2"
+            - name: ZOOKEEPER_SERVERS
+              value: "zookeeper1-service:2888:3888;0.0.0.0:2888:3888;zookeeper3-service:2888:3888"
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+      volumes:
+        - name: zookeeper-secrets-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-secrets-2-pvc
+        - name: zookeeper-data-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-data-2-pvc
+        - name: zookeeper-log-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-log-2-pvc
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper3-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ZOOKEEPER3
+  template:
+    metadata:
+      name: zookeeper3-lab
+      labels:
+        app: ZOOKEEPER3
+    spec:
+      hostname: zookeeper3
+      containers:
+        - name: zookeeper3
+          image: confluentinc/cp-zookeeper:7.3.0
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - mountPath: /etc/zookeeper/secrets
+              name: zookeeper-secrets-vol
+            - mountPath: /var/lib/zookeeper/data
+              name: zookeeper-data-vol
+            - mountPath: /var/lib/zookeeper/log
+              name: zookeeper-log-vol
+          env:
+            - name: ZOOKEEPER_SERVER_ID
+              value: "3"
+            - name: ZOOKEEPER_SERVERS
+              value: "zookeeper1-service:2888:3888;zookeeper2-service:2888:3888;0.0.0.0:2888:3888"
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+      volumes:
+        - name: zookeeper-secrets-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-secrets-3-pvc
+        - name: zookeeper-data-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-data-3-pvc
+        - name: zookeeper-log-vol
+          persistentVolumeClaim:
+            claimName: zookeeper-log-3-pvc
       restartPolicy: Always

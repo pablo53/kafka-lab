@@ -2,6 +2,8 @@ package net.pryszawa.kafkalab.consumer
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
+import org.springframework.kafka.config.TopicBuilder
+import org.springframework.kafka.core.KafkaAdmin
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.handler.annotation.Header
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service
 import java.util.logging.Logger
 
 @Service
-class KafkaConsumerService {
+class KafkaConsumerService(
+    private val kafkaAdmin: KafkaAdmin,
+) {
 
     companion object {
         private val LOG: Logger = Logger.getLogger(KafkaConsumerService::class.java.canonicalName)
@@ -26,7 +30,13 @@ class KafkaConsumerService {
         @Header(KafkaHeaders.RECEIVED_KEY) key: String?,
         @Header(KafkaHeaders.RECORD_METADATA) metadata: ConsumerRecordMetadata,
     ) {
-        LOG.info("Received a message on topic '${metadata?.topic()}', timestamp ${record?.timestamp()}, offset ${metadata?.offset()}, partition ${metadata?.partition()}, leaderEpoch ${record?.leaderEpoch()?.orElse(null)}, key '$key', value '$payload'")
+        LOG.info("Received a message on topic '${metadata.topic()}', timestamp ${record.timestamp()}, offset ${metadata.offset()}, partition ${metadata.partition()}, leaderEpoch ${record.leaderEpoch()?.orElse(null)}, key '$key', value '$payload'")
+        kafkaAdmin.createOrModifyTopics(
+            TopicBuilder.name(payload)
+                .partitions(3)
+                .replicas(3)
+                .build()
+        )
     }
 
 }

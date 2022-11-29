@@ -1,0 +1,5 @@
+net.pryszawa.kafka-lab:
+  spring:
+    kafka:
+      bootstrap-servers-config: localhost:30093
+      heart-beat-cron: "0/5 * * * * *"

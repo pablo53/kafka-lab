@@ -1,0 +1,6 @@
+net.pryszawa.kafka-lab:
+  spring:
+    kafka:
+      bootstrap-servers-config: localhost:9092
+      heart-beat-cron: "0 0/5 * * * MON-FRI"
+      group-id: "DefaultGroup"

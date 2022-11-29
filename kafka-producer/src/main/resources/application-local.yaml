@@ -1,0 +1,4 @@
+spring:
+  kafka:
+    bootstrap-servers-config: localhost:30092
+    heart-beat-cron: "0/5 * * * * *"

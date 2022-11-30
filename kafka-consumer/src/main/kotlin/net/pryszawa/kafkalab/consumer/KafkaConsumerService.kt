@@ -30,13 +30,17 @@ class KafkaConsumerService(
         @Header(KafkaHeaders.RECEIVED_KEY) key: String?,
         @Header(KafkaHeaders.RECORD_METADATA) metadata: ConsumerRecordMetadata,
     ) {
-        LOG.info("Received a message on topic '${metadata.topic()}', timestamp ${record.timestamp()}, offset ${metadata.offset()}, partition ${metadata.partition()}, leaderEpoch ${record.leaderEpoch()?.orElse(null)}, key '$key', value '$payload'")
-        kafkaAdmin.createOrModifyTopics(
-            TopicBuilder.name(payload)
-                .partitions(3)
-                .replicas(3)
-                .build()
-        )
+        LOG.info("Received a message on topic '${metadata.topic()}', timestamp ${record.timestamp()}, offset ${metadata.offset()}, partition ${metadata.partition()}, leaderEpoch ${record.leaderEpoch()?.orElse(null)}, key '$key'.")
+        when (key) {
+            "AddTopic" ->
+                kafkaAdmin.createOrModifyTopics(
+                    TopicBuilder.name(payload)
+                        .partitions(3)
+                        .replicas(3)
+                        .build()
+                )
+            "HeartBeat" -> LOG.info(payload)
+        }
     }
 
 }

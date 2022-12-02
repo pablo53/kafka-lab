@@ -2,7 +2,7 @@
 
 
 
-openssl genrsa -out rootCA.key
+openssl genrsa -out rootCA.key 2048
 
 openssl req -key rootCA.key -new -out rootCA.csr \
  -subj "/C=PL/ST=MAZ/L=WARSAW/O=raberix/OU=it/CN=pablo53"

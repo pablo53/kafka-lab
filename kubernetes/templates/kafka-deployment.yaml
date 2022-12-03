@@ -35,9 +35,29 @@ spec:
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "INTERNAL://kafka1-service:9092,EXTERNAL://localhost:30092"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:SSL"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "INTERNAL"
+            - name: KAFKA_SSL_KEYSTORE_LOCATION
+              value: "/etc/kafka/secrets/kafka1.keystore.jks"
+            - name: KAFKA_SSL_KEYSTORE_PASSWORD
+              value: "kafka1"
+            - name: KAFKA_SSL_KEY_PASSWORD
+              value: "kafka1"
+            - name: KAFKA_SSL_TRUSTSTORE_LOCATION
+              value: "/etc/kafka/secrets/kafka1.truststore.jks"
+            - name: KAFKA_SSL_TRUSTSTORE_PASSWORD
+              value: "kafka1"
+            - name: KAFKA_SSL_ENABLED_PROTOCOLS
+              value: "TLSv1.3,TLSv1.2"
+            - name: KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM
+              value: ""
+#            - name: KAFKA_LOG4J_LOGGERS
+#              value: "kafka=DEBUG"
+#            - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+#              value: "DEBUG"
+#            - name: KAFKA_TOOLS_LOG4J_LOGLEVEL
+#              value: "DEBUG"
 #            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
 #              value: "1"
       volumes:
@@ -86,9 +106,29 @@ spec:
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "INTERNAL://kafka2-service:9092,EXTERNAL://localhost:30093"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:SSL"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "INTERNAL"
+            - name: KAFKA_SSL_KEYSTORE_LOCATION
+              value: "/etc/kafka/secrets/kafka2.keystore.jks"
+            - name: KAFKA_SSL_KEYSTORE_PASSWORD
+              value: "kafka2"
+            - name: KAFKA_SSL_KEY_PASSWORD
+              value: "kafka2"
+            - name: KAFKA_SSL_TRUSTSTORE_LOCATION
+              value: "/etc/kafka/secrets/kafka2.truststore.jks"
+            - name: KAFKA_SSL_TRUSTSTORE_PASSWORD
+              value: "kafka2"
+            - name: KAFKA_SSL_ENABLED_PROTOCOLS
+              value: "TLSv1.3,TLSv1.2"
+            - name: KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM
+              value: ""
+#            - name: KAFKA_LOG4J_LOGGERS
+#              value: "kafka=DEBUG"
+#            - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+#              value: "DEBUG"
+#            - name: KAFKA_TOOLS_LOG4J_LOGLEVEL
+#              value: "DEBUG"
 #            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
 #              value: "1"
       volumes:
@@ -137,9 +177,29 @@ spec:
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "INTERNAL://kafka3-service:9092,EXTERNAL://localhost:30094"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:SSL"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "INTERNAL"
+            - name: KAFKA_SSL_KEYSTORE_LOCATION
+              value: "/etc/kafka/secrets/kafka3.keystore.jks"
+            - name: KAFKA_SSL_KEYSTORE_PASSWORD
+              value: "kafka3"
+            - name: KAFKA_SSL_KEY_PASSWORD
+              value: "kafka3"
+            - name: KAFKA_SSL_TRUSTSTORE_LOCATION
+              value: "/etc/kafka/secrets/kafka3.truststore.jks"
+            - name: KAFKA_SSL_TRUSTSTORE_PASSWORD
+              value: "kafka3"
+            - name: KAFKA_SSL_ENABLED_PROTOCOLS
+              value: "TLSv1.3,TLSv1.2"
+            - name: KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM
+              value: ""
+#            - name: KAFKA_LOG4J_LOGGERS
+#              value: "kafka=DEBUG"
+#            - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+#              value: "DEBUG"
+#            - name: KAFKA_TOOLS_LOG4J_LOGLEVEL
+#              value: "DEBUG"
 #            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
 #              value: "1"
       volumes:

@@ -1,4 +1,6 @@
-spring:
+net.pryszawa.kafkalab:
   kafka:
     bootstrap-servers-config: localhost:30092
     heart-beat-cron: "0/5 * * * * *"
+    truststore.location: ${net.pryszawa.kafkalab.dir}/certificates/kafka1.truststore.jks
+    truststore.password: "kafka1"

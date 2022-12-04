@@ -15,7 +15,7 @@ class KafkaProducerService(
         private val LOG: Logger = Logger.getLogger(KafkaProducerService::class.java.canonicalName)
     }
 
-    @Scheduled(cron = "\${spring.kafka.heart-beat-cron}")
+    @Scheduled(cron = "\${net.pryszawa.kafkalab.kafka.heart-beat-cron}")
     fun heartBeat() {
         LOG.info("--- Heart Beat ---")
         kafkaTemplate.send(ProducerRecord(
@@ -23,6 +23,7 @@ class KafkaProducerService(
             "HeartBeat", // key
             "--- Heart Beat ---", // payload
         ))
+        kafkaTemplate.flush()
     }
 
 }

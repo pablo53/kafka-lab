@@ -38,9 +38,10 @@ tasks.withType(KotlinCompile) {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+//	useJUnitPlatform()
 }
 
 bootRun {
-	args = ["--spring.profiles.active=local"]
+	args = ["--spring.profiles.active=local",
+			"--net.pryszawa.kafkalab.dir=${projectDir.toPath().toAbsolutePath().parent}"]
 }

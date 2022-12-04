@@ -1,4 +1,4 @@
-spring:
+net.pryszawa.kafkalab:
   kafka:
     bootstrap-servers-config2: localhost:9092
     heart-beat-cron: "0 0/5 * * * MON-FRI"

@@ -22,7 +22,7 @@ class KafkaConsumerService(
 
     @KafkaListener(
         topics = ["AdminTopic"],
-        groupId = "\${net.pryszawa.kafka-lab.spring.kafka.group-id}",
+        groupId = "\${net.pryszawa.kafkalab.kafka.group-id}",
     )
     fun listenAdminTopic(
         record: ConsumerRecord<String, String>,

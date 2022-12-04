@@ -1,5 +1,5 @@
-net.pryszawa.kafka-lab:
-  spring:
-    kafka:
-      bootstrap-servers-config: localhost:30093
-      heart-beat-cron: "0/5 * * * * *"
+net.pryszawa.kafkalab:
+  kafka:
+    bootstrap-servers-config: localhost:30093
+    truststore.location: ${net.pryszawa.kafkalab.dir}/certificates/kafka1.truststore.jks
+    truststore.password: "kafka1"

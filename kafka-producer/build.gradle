@@ -17,7 +17,10 @@ repositories {
 
 dependencies {
 	// Spring Boot:
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation('org.springframework.boot:spring-boot-starter') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// Kotlin:
@@ -42,6 +45,6 @@ tasks.named('test') {
 }
 
 bootRun {
-	args = ["--spring.profiles.active=local",
-			"--net.pryszawa.kafkalab.dir=${projectDir.toPath().toAbsolutePath().parent}"]
+	args = ["--spring.profiles.active=local"]
+	systemProperty 'cert.dir', "${projectDir.toPath().toAbsolutePath().parent}/certificates"
 }

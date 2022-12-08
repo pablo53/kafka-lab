@@ -50,6 +50,10 @@ class KafkaConfig(
         NewTopic("AdminTopic", 10, 3)
 
     @Bean
+    fun applicationLogsTopic(): NewTopic =
+        NewTopic("ApplicationLogs", 10, 3)
+
+    @Bean
     fun getKafkaProducerFactory(): ProducerFactory<String, String> =
         DefaultKafkaProducerFactory(mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServersConfig,

@@ -1,10 +1,20 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+buildscript {
+	repositories {
+		gradlePluginPortal()
+	}
+	dependencies {
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.1'
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '3.0.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'org.jetbrains.kotlin.jvm' version '1.7.21'
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.7.21'
+	id 'com.google.protobuf' version '0.9.1'
 }
 
 group = 'net.pryszawa.kafkalab'
@@ -31,6 +41,22 @@ dependencies {
 //	implementation 'org.apache.kafka:kafka-clients:3.3.1'
 	implementation 'org.springframework.kafka:spring-kafka'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+	// protocol buffers:
+	//implementation 'com.google.protobuf:protobuf-java:3.21.12'
+	implementation 'com.google.protobuf:protobuf-kotlin:3.21.12'
+}
+
+sourceSets {
+	main {
+		proto {
+//			srcDir 'src/main/proto'
+		}
+	}
+}
+
+clean {
+	delete protobuf.generatedFilesBaseDir
 }
 
 tasks.withType(KotlinCompile) {
@@ -47,4 +73,10 @@ tasks.named('test') {
 bootRun {
 	args = ["--spring.profiles.active=local"]
 	systemProperty 'cert.dir', "${projectDir.toPath().toAbsolutePath().parent}/certificates"
+}
+
+protobuf {
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.21.12'
+	}
 }

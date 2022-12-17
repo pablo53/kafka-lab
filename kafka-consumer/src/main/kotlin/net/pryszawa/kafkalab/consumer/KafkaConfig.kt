@@ -2,6 +2,7 @@ package net.pryszawa.kafkalab.consumer
 
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.common.serialization.ByteArrayDeserializer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
@@ -51,7 +52,7 @@ class KafkaConfig(
         DefaultKafkaConsumerFactory(mapOf(
             ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServersConfig,
             ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to ByteArrayDeserializer::class.java,
         ) + sslProperties)
 
     @Bean("kafkaListenerContainerFactory")

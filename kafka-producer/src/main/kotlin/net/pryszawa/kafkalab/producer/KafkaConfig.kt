@@ -3,6 +3,7 @@ package net.pryszawa.kafkalab.producer
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.common.serialization.ByteArraySerializer
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
@@ -54,15 +55,15 @@ class KafkaConfig(
         NewTopic("ApplicationLogs", 10, 3)
 
     @Bean
-    fun getKafkaProducerFactory(): ProducerFactory<String, String> =
+    fun getKafkaProducerFactory(): ProducerFactory<String, ByteArray> =
         DefaultKafkaProducerFactory(mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServersConfig,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to ByteArraySerializer::class.java,
         ) + sslProperties)
 
     @Bean
-    fun getKafkaTemplate(kafkaProducerFactory: ProducerFactory<String, String>): KafkaTemplate<String, String> =
+    fun getKafkaTemplate(kafkaProducerFactory: ProducerFactory<String, ByteArray>): KafkaTemplate<String, ByteArray> =
         KafkaTemplate(kafkaProducerFactory)
 
 }

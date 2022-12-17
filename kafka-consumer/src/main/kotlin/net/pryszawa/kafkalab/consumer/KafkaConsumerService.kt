@@ -1,5 +1,6 @@
 package net.pryszawa.kafkalab.consumer
 
+import net.pryszawa.kafkalab.protobuf.HeartBeatModel
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.config.TopicBuilder
@@ -25,8 +26,8 @@ class KafkaConsumerService(
         groupId = "\${net.pryszawa.kafkalab.kafka.group-id}",
     )
     fun listenAdminTopic(
-        record: ConsumerRecord<String, String>,
-        @Payload payload: String,
+        record: ConsumerRecord<String, ByteArray>,
+        @Payload payload: ByteArray,
         @Header(KafkaHeaders.RECEIVED_KEY) key: String?,
         @Header(KafkaHeaders.RECORD_METADATA) metadata: ConsumerRecordMetadata,
     ) {
@@ -34,12 +35,15 @@ class KafkaConsumerService(
         when (key) {
             "AddTopic" ->
                 kafkaAdmin.createOrModifyTopics(
-                    TopicBuilder.name(payload)
+                    TopicBuilder.name(String(payload))
                         .partitions(3)
                         .replicas(3)
                         .build()
                 )
-            "HeartBeat" -> LOG.info(payload)
+            "HeartBeat" -> {
+                val heartBeat = HeartBeatModel.HeartBeat.parseFrom(payload)
+                LOG.info(heartBeat.msg)
+            }
         }
     }
 

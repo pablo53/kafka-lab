@@ -1,0 +1,9 @@
+
+@namespace("net.pryszawa.kafkalab.avro")
+protocol HeartBeat2Protocol {
+
+    record HeartBeat2 {
+        string msg;
+    }
+
+}

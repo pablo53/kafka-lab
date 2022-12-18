@@ -1,5 +1,6 @@
 package net.pryszawa.kafkalab.consumer
 
+import net.pryszawa.kafkalab.avro.HeartBeat2
 import net.pryszawa.kafkalab.protobuf.HeartBeatModel
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
@@ -10,6 +11,7 @@ import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
+import java.nio.ByteBuffer
 import java.util.logging.Logger
 
 @Service
@@ -43,6 +45,10 @@ class KafkaConsumerService(
             "HeartBeat" -> {
                 val heartBeat = HeartBeatModel.HeartBeat.parseFrom(payload)
                 LOG.info(heartBeat.msg)
+            }
+            "HeartBeat2" -> {
+                val heartBeat2 = HeartBeat2.fromByteBuffer(ByteBuffer.wrap(payload))
+                LOG.info(heartBeat2.msg.toString())
             }
         }
     }

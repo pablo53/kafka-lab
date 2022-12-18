@@ -1,4 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.apache.avro.compiler.idl.Idl
+import org.apache.avro.compiler.specific.SpecificCompiler
+
+import java.nio.file.Files
 
 buildscript {
 	repositories {
@@ -6,6 +10,7 @@ buildscript {
 	}
 	dependencies {
 		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.1'
+		classpath 'org.apache.avro:avro-tools:1.11.1'
 	}
 }
 
@@ -35,13 +40,14 @@ dependencies {
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
 	// Kafka:
-//	implementation 'org.apache.kafka:kafka-clients:3.3.1'
 	implementation 'org.springframework.kafka:spring-kafka'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
 	// protocol buffers:
-	//implementation 'com.google.protobuf:protobuf-java:3.21.12'
 	implementation 'com.google.protobuf:protobuf-kotlin:3.21.12'
+
+	// AVRO:
+	implementation 'org.apache.avro:avro:1.11.1'
 }
 
 tasks.withType(KotlinCompile) {
@@ -64,4 +70,33 @@ protobuf {
 	protoc {
 		artifact = 'com.google.protobuf:protoc:3.21.12'
 	}
+}
+
+// AVRO:
+def avroSrcFiles = fileTree('src/main/avro').include('**/*.avdl')
+def avroGenDir = buildDir.toPath().resolve("generated/source/avro/main/java")
+def avroNamespace = "net.pryszawa.kafkalab.avro"
+sourceSets.main.java.srcDir avroGenDir
+task avroBuild() {
+	group = "build"
+	inputs.files avroSrcFiles
+	outputs.dir avroGenDir
+	doLast {
+		def destDir = avroGenDir.toFile()
+		def namespaceDestDir = avroGenDir.resolve(avroNamespace.replace('.', '/'))
+		Files.createDirectories(namespaceDestDir)
+		avroSrcFiles.each { avroSrcFile ->
+			def parser = new Idl(avroSrcFile)
+			def protocol = parser.CompilationUnit()
+			def schemas = protocol.types
+			schemas.each {schema ->
+				def compiler = new SpecificCompiler(schema)
+				compiler.compileToDestination(avroSrcFile, destDir)
+			}
+		}
+	}
+}
+compileKotlin.dependsOn avroBuild
+clean {
+	delete avroGenDir
 }

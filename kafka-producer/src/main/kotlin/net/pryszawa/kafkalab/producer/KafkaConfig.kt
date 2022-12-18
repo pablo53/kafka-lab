@@ -4,6 +4,7 @@ import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.ByteArraySerializer
+import org.apache.kafka.common.serialization.ByteBufferSerializer
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
@@ -13,6 +14,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaAdmin
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
+import java.nio.ByteBuffer
 
 @Configuration
 class KafkaConfig(
@@ -55,7 +57,7 @@ class KafkaConfig(
         NewTopic("ApplicationLogs", 10, 3)
 
     @Bean
-    fun getKafkaProducerFactory(): ProducerFactory<String, ByteArray> =
+    fun getKafkaByteArrayProducerFactory(): ProducerFactory<String, ByteArray> =
         DefaultKafkaProducerFactory(mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServersConfig,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
@@ -63,7 +65,19 @@ class KafkaConfig(
         ) + sslProperties)
 
     @Bean
-    fun getKafkaTemplate(kafkaProducerFactory: ProducerFactory<String, ByteArray>): KafkaTemplate<String, ByteArray> =
+    fun getKafkaByteBufferProducerFactory(): ProducerFactory<String, ByteBuffer> =
+        DefaultKafkaProducerFactory(mapOf(
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServersConfig,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to ByteBufferSerializer::class.java,
+        ) + sslProperties)
+
+    @Bean
+    fun getKafkaByteArrayTemplate(kafkaProducerFactory: ProducerFactory<String, ByteArray>): KafkaTemplate<String, ByteArray> =
+        KafkaTemplate(kafkaProducerFactory)
+
+    @Bean
+    fun getKafkaByteBufferTemplate(kafkaProducerFactory: ProducerFactory<String, ByteBuffer>): KafkaTemplate<String, ByteBuffer> =
         KafkaTemplate(kafkaProducerFactory)
 
 }
